@@ -281,6 +281,23 @@ let grammarWords = [
   { word: "-(으)려고 하다", romanization: "-(eu)ryeogo hada", meaning: "打算…" },
   { word: "-기 위해서", romanization: "-gi wihaeseo", meaning: "為了…" }
   ];
+  
+  
+  
+// 單字總覽
+const wordDatabase = {
+  people: peopleWords,
+  place: placeWords,
+  food: foodWords,
+  verb: verbWords,
+  adj: adjWords,
+  time: timeWords,
+  direction: directionWords,
+  transport: transportWords,
+  life: lifeWords,
+  grammar: grammarWords
+};
+
 
 // ✅ 預設載入人物類
 let words = peopleWords;
@@ -334,3 +351,40 @@ categorySelect.addEventListener("change", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   updateWord();
 });
+
+//新增單字總覽彈窗功能
+const wordlistBtn = document.getElementById("toggle-wordlist");
+const wordlistModal = document.getElementById("wordlist-modal");
+const closeWordlist = document.getElementById("close-wordlist");
+const wordlistBody = document.getElementById("wordlist-body");
+
+wordlistBtn.addEventListener("click", () => {
+  const selectedCategory = categorySelect.value;
+  const wordsToShow = wordDatabase[selectedCategory] || [];
+  wordlistBody.innerHTML = "";
+
+  wordsToShow.forEach(word => {
+    const row = document.createElement("tr");
+    row.className = "hover:bg-indigo-50 cursor-pointer";
+    row.onclick = () => {
+      koreanWordEl.textContent = word.word;
+      romanizationEl.textContent = word.romanization;
+      chineseWordEl.textContent = word.meaning;
+      wordlistModal.classList.add("hidden");
+      koreanWordEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+    row.innerHTML = `
+      <td class="px-4 py-2 border-b">${word.word}</td>
+      <td class="px-4 py-2 border-b">${word.meaning}</td>
+      <td class="px-4 py-2 border-b">${word.romanization}</td>
+    `;
+    wordlistBody.appendChild(row);
+  });
+
+  wordlistModal.classList.remove("hidden");
+});
+
+closeWordlist.addEventListener("click", () => {
+  wordlistModal.classList.add("hidden");
+});
+
