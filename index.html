@@ -9,8 +9,22 @@
 </head>
 <body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4 font-['Noto_Sans_TC','Noto_Sans_KR',sans-serif]">
 
-  <h1 class="text-3xl font-bold text-center text-indigo-700 mb-4">韓文單字學習器</h1>
-        <p class="text-center text-gray-600 mb-6">TOPIK I 基礎單字</p>
+  <h1 class="text-4xl font-bold text-center text-indigo-700 mb-4">韓文單字學習器</h1>
+        <p class="text-center text-gray-600 mb-1">TOPIK I 基礎單字</p>
+        
+ <!-- 功能按鈕 -->
+  <div class="flex justify-center gap-4 mt-4 mb-6">
+    <button id="toggle-hangul"
+      class="px-6 py-2 bg-white text-indigo-600 font-semibold rounded-full shadow transition duration-200 hover:bg-indigo-500 hover:text-white">
+      40音表
+    </button>
+    <button id="toggle-wordlist"
+      class="px-6 py-2 bg-white text-indigo-600 font-semibold rounded-full shadow transition duration-200 hover:bg-indigo-500 hover:text-white">
+      單字總覽
+    </button>
+  </div>
+
+     
   <!-- 分類選單 -->
 <div class="mb-4">
   <select id="category-select" class="py-2 px-4 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -27,6 +41,7 @@
   </select>
 </div>
   
+
   
   <!-- 單字卡片 -->
   <div class="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md text-center mb-6">
@@ -38,12 +53,123 @@
     </button>
   </div>
 
-  <!-- 按鈕區 -->
-  <div class="flex gap-4">
-    <button id="prev-btn" class="py-2 px-4 bg-gray-300 text-gray-800 rounded-full hover:bg-gray-400 transition">上一字</button>
-    <button id="next-btn" class="py-2 px-4 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition">下一字</button>
+ <!-- 按鈕區 -->
+<div class="w-full max-w-md flex gap-4">
+  <button id="prev-btn" class="flex-1 py-4 bg-gray-300 text-gray-800 rounded-full hover:bg-gray-400 transition">
+    上一字
+  </button>
+  <button id="next-btn" class="flex-1 py-4 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition">
+    下一字
+  </button>
+</div>
+
+ <!-- 40音表彈窗 -->
+  <div id="hangul-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh] relative">
+    
+  <button id="close-hangul" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold">✕</button>
+  <h2 class="text-xl font-bold text-indigo-700 text-center mb-4">韓文40音表</h2>
+  <div class="overflow-y-auto max-h-[70vh] border rounded">
+
+
+      <!-- 子音區 -->
+      <h3 class="text-md font-semibold mb-2 text-gray-700">子音（基本 + 雙子音）</h3>
+      <div class="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-6">
+        <!-- 子音卡片 -->
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄱ</div><div class="text-sm text-gray-600">g/k</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄴ</div><div class="text-sm text-gray-600">n</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄷ</div><div class="text-sm text-gray-600">d/t</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄹ</div><div class="text-sm text-gray-600">r/l</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅁ</div><div class="text-sm text-gray-600">m</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅂ</div><div class="text-sm text-gray-600">b/p</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅅ</div><div class="text-sm text-gray-600">s</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅇ</div><div class="text-sm text-gray-600">ng/-</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅈ</div><div class="text-sm text-gray-600">j</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅊ</div><div class="text-sm text-gray-600">ch</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅋ</div><div class="text-sm text-gray-600">k</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅌ</div><div class="text-sm text-gray-600">t</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅍ</div><div class="text-sm text-gray-600">p</div></div>
+        <div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅎ</div><div class="text-sm text-gray-600">h</div></div>
+        <div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㄲ</div><div class="text-sm text-gray-600">kk</div></div>
+        <div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㄸ</div><div class="text-sm text-gray-600">tt</div></div>
+        <div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅃ</div><div class="text-sm text-gray-600">pp</div></div>
+        <div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅆ</div><div class="text-sm text-gray-600">ss</div></div>
+        <div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅉ</div><div class="text-sm text-gray-600">jj</div></div>
+      </div>
+
+      <!-- 母音區 -->
+     <h3 class="text-md font-semibold mb-2 text-gray-700">母音（基本 + 雙母音）</h3>
+        <div class="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-2">
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅏ</div><div class="text-sm text-gray-600">a</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅑ</div><div class="text-sm text-gray-600">ya</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅓ</div><div class="text-sm text-gray-600">eo</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅕ</div><div class="text-sm text-gray-600">yeo</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅗ</div><div class="text-sm text-gray-600">o</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅛ</div><div class="text-sm text-gray-600">yo</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅜ</div><div class="text-sm text-gray-600">u</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅠ</div><div class="text-sm text-gray-600">yu</div></div>
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅡ</div><div class="text-sm text-gray-600">eu</div></div>          
+        <div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅣ</div><div class="text-sm text-gray-600">i</div></div>
+        </div>
+
+        <div class="grid grid-cols-4 sm:grid-cols-6 gap-3">
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅐ</div><div class="text-sm text-gray-600">ae</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅔ</div><div class="text-sm text-gray-600">e</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅒ</div><div class="text-sm text-gray-600">yae</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅖ</div><div class="text-sm text-gray-600">ye</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅘ</div><div class="text-sm text-gray-600">wa</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅙ</div><div class="text-sm text-gray-600">wae</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅝ</div><div class="text-sm text-gray-600">wo</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅞ</div><div class="text-sm text-gray-600">we</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅟ</div><div class="text-sm text-gray-600">wi</div></div>
+        <div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅢ</div><div class="text-sm text-gray-600">ui</div></div>
+        </div>
+  </div>   
+  </div>  
+  </div>  
+   
+<!-- 單字總覽彈窗 -->
+<div id="wordlist-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh] relative">
+    
+    <button id="close-wordlist" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-30">✕</button>
+    <h2 class="text-xl font-bold text-indigo-700 text-center mb-4 sticky top-0 bg-white z-20">分類單字總覽</h2>
+
+
+    <div class="overflow-y-auto max-h-[70vh] border rounded">
+      <table class="min-w-full table-auto">
+        <thead class="sticky top-0 bg-indigo-100 z-10">
+          <tr>
+            <th class="px-4 py-2 text-left text-indigo-700 font-semibold border-b">韓文</th>
+            <th class="px-4 py-2 text-left text-indigo-700 font-semibold border-b">中文</th>
+            <th class="px-4 py-2 text-left text-indigo-700 font-semibold border-b">羅馬拼音</th>
+          </tr>
+        </thead>
+        <tbody id="wordlist-body">
+          <!-- JS 會插入資料 -->
+        </tbody>
+      </table>
+    </div>
   </div>
+</div>
+
 
   <script src="script.js"></script>
+  <script>
+  const hangulBtn = document.getElementById("toggle-hangul");
+  const hangulModal = document.getElementById("hangul-modal");
+  const closeHangul = document.getElementById("close-hangul");
+
+  hangulBtn.addEventListener("click", () => {
+    hangulModal.classList.remove("hidden");
+  });
+
+  closeHangul.addEventListener("click", () => {
+    hangulModal.classList.add("hidden");
+  });
+  
+  </script>
+
+ 
 </body>
 </html>
