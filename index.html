@@ -11,6 +11,13 @@
 
   <h1 class="text-4xl font-bold text-center text-indigo-700 mb-4">韓文單字學習器</h1>
         <p class="text-center text-gray-600 mb-1">TOPIK I 基礎單字</p>
+ 
+ <!-- 模式切換按鈕 -->
+  <div class="flex justify-center mb-4 bg-gray-200 rounded-full p-1 w-full max-w-xs mx-auto">
+            <button id="learn-mode-btn" class="w-1/2 py-2 px-4 rounded-full bg-indigo-500 text-white">學習模式</button>
+            <button id="quiz-mode-btn" class="w-1/2 py-2 px-4 rounded-full text-gray-700">測驗模式</button>
+  </div>
+ 
         
  <!-- 功能按鈕 -->
   <div class="flex justify-center gap-4 mt-4 mb-6">
@@ -37,24 +44,49 @@
     <option value="direction">方位類</option>
     <option value="transport">交通工具類</option>
     <option value="life">生活名詞類</option>
-    <option value="grammar">語法類</option>
+    <option value="emotion">情緒類</option>
+    <option value="color">色彩類</option>
+    <option value="body">人體類</option>
+    <option value="school">校園類</option>
+    <option value="shopping">購物類</option>
+    <option value="adverb">副詞類</option>
+    <option value="question">問句類</option>
+    <option value="nature">大自然類</option>
+    
   </select>
 </div>
   
 
   
   <!-- 單字卡片 -->
-  <div class="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md text-center mb-6">
+  <div id="card-view" class="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md text-center mb-6">
     <div id="korean-word" class="text-5xl md:text-6xl font-bold mb-2"></div>
-    <div id="romanization" class="text-xl text-gray-500 mb-5"></div>
+    <div id="romanization" class="hidden" class="text-xl text-gray-500 mb-5"></div>
     <div id="chinese-word" class="text-2xl text-indigo-600 font-semibold mb-4"></div>
     <button id="speak-btn" class="text-3xl text-gray-400 hover:text-indigo-500 transition-colors">
       🔊
     </button>
   </div>
+  
+  
+  <!-- 單字測驗區塊 -->
+  <div id="quiz-view" class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center mt-6 hidden">
+  <div id="number-of-quiz" class="mb-2 text-md text-gray-600">進度: 0 / 10</div>
+  <div id="question" class="text-2xl font-bold text-indigo-700 mb-4">題目</div>
+  <input id="answer-input" type="text" class="w-full px-4 py-2 border rounded-lg text-center text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="請輸入答案" />
+  <div id="feedback" class="mt-3 text-lg font-semibold"></div>
+  <div id="score" class="mt-2 text-md text-green-600 font-bold">分數: 0/0</div>
+
+  <div class="flex justify-center gap-4 mt-4">
+    <button id="submit-btn" class="px-6 py-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition">提交答案</button>
+    <button id="next-question-btn" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-full hover:bg-gray-400 transition hidden">下一題</button>
+  </div>
+</div>
+  
+  
 
  <!-- 按鈕區 -->
-<div class="w-full max-w-md flex gap-4">
+<div id="nav-buttons" class="w-full max-w-md flex gap-4">
   <button id="prev-btn" class="flex-1 py-4 bg-gray-300 text-gray-800 rounded-full hover:bg-gray-400 transition">
     上一字
   </button>
@@ -142,7 +174,7 @@
           <tr>
             <th class="px-4 py-2 text-left text-indigo-700 font-semibold border-b min-w-[80px]">韓文</th>
             <th class="px-4 py-2 text-left text-indigo-700 font-semibold border-b">中文</th>
-            <th class="px-4 py-2 text-left text-indigo-700 font-semibold border-b">羅馬拼音</th>
+            <th class="px-4 py-2 text-left text-indigo-700 font-semibold border-b">拼音</th>
           </tr>
         </thead>
         <tbody id="wordlist-body">
