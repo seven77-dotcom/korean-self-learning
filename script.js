@@ -1,23 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- DOM 元素選擇 (統一管理以避免錯誤) ---
+  // --- DOM 元素選擇 (統一管理) ---
   const koreanWordEl = document.getElementById("korean-word");
   const romanizationEl = document.getElementById("romanization");
   const chineseWordEl = document.getElementById("chinese-word");
   const speakBtn = document.getElementById("speak-btn");
   const categorySelect = document.getElementById("category-select");
 
+  // 模式切換
   const learnModeBtn = document.getElementById("learn-mode-btn");
   const quizModeBtn = document.getElementById("quiz-mode-btn");
   const cardView = document.getElementById("card-view");
   const navButtons = document.getElementById("nav-buttons");
   const quizView = document.getElementById("quiz-view");
-  const hangulBtn = document.getElementById("toggle-hangul");
-  const wordlistBtn = document.getElementById("toggle-wordlist");
 
+  // 控制區元件
+  const learnModeControls = document.getElementById("learn-mode-controls");
+  const quizModeDescription = document.getElementById("quiz-mode-description");
+
+  // 彈窗: 40音表
+  const hangulBtn = document.getElementById("toggle-hangul");
+  const hangulModal = document.getElementById("hangul-modal");
+  const closeHangul = document.getElementById("close-hangul");
+
+  // 彈窗: 單字總覽
+  const wordlistBtn = document.getElementById("toggle-wordlist");
   const wordlistModal = document.getElementById("wordlist-modal");
   const closeWordlist = document.getElementById("close-wordlist");
   const wordlistBody = document.getElementById("wordlist-body");
 
+  // 測驗區塊
   const questionEl = document.getElementById('question');
   const answerInput = document.getElementById('answer-input');
   const feedbackEl = document.getElementById('feedback');
@@ -26,14 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextQuestionBtn = document.getElementById('next-question-btn');
   const numberOfQuizEl = document.getElementById('number-of-quiz');
 
-
-
   // --- 狀態與資料 ---
   let currentIndex = 0;
   let synth = window.speechSynthesis;
   let voices = [];
-
-  let peopleWords = [
+  
+    let peopleWords = [
   { word: "학생", romanization: "haksaeng", meaning: "學生" },
   { word: "선생님", romanization: "seonsaengnim", meaning: "老師" },
   { word: "의사", romanization: "uisa", meaning: "醫生" },
@@ -460,34 +469,11 @@ let natureWords = [
 ];
 
 
-
   const wordDatabase = {
-    
-    people: peopleWords, 
-    place: placeWords, 
-    food: foodWords, 
-    verb: verbWords, 
-    adj: adjWords, 
-    time: timeWords, 
-    direction: directionWords, 
-    transport: transportWords, 
-    life: lifeWords, 
-    grammar: grammarWords, 
-    emotion: emotionWords,
-    color: colorWords,
-    number: numberWords,
-    body: bodyWords,
-    weather: weatherWords,
-    school: schoolWords, 
-    shopping: shoppingWords, 
-    adverb: adverbWords, 
-    question: questionWords, 
-    nature: natureWords, 
-    
+    people: peopleWords, place: placeWords, food: foodWords, verb: verbWords, adj: adjWords, time: timeWords, direction: directionWords, transport: transportWords, life: lifeWords, grammar: grammarWords, emotion: emotionWords, color: colorWords, number: numberWords, body: bodyWords, weather: weatherWords, school: schoolWords, shopping: shoppingWords, adverb: adverbWords, question: questionWords, nature: natureWords,
   };
 
-  // 預設載入人物類
-  let words = peopleWords;
+  let words = peopleWords; // 預設載入人物類
 
   // Quiz State
   let quizLimit = 10;
@@ -511,17 +497,18 @@ let natureWords = [
 
   function setupQuiz() {
     if (quizTotal >= quizLimit) {
-      questionEl.textContent = "🎉 測驗完成！";
+      questionEl.textContent = "🎉 測驗完成🎉 ";
       answerInput.disabled = true;
       submitBtn.classList.add("hidden");
-      nextQuestionBtn.classList.add("hidden");
+      nextQuestionBtn.classList.remove("hidden"); 
+      nextQuestionBtn.textContent = "重新測驗";
       feedbackEl.textContent = "";
       numberOfQuizEl.textContent = `進度: ${quizLimit} / ${quizLimit}`;
-      scoreEl.textContent = `分數: ${quizCorrect}/${quizLimit}`;
-    
+      scoreEl.textContent = `最終分數: ${quizCorrect}`;
       return;
     }
 
+    nextQuestionBtn.textContent = "下一題";
     const selectedCategory = categorySelect.value;
     words = wordDatabase[selectedCategory] || peopleWords;
 
@@ -544,7 +531,13 @@ let natureWords = [
       answerInput.lang = 'ko';
     }
     numberOfQuizEl.textContent = `進度: ${quizTotal + 1} / ${quizLimit}`;
-    scoreEl.textContent = `分數: ${quizCorrect}/${quizLimit}`;
+    scoreEl.textContent = `分數: ${quizCorrect}`;
+  }
+  
+  function resetQuiz() {
+      quizCorrect = 0;
+      quizTotal = 0;
+      setupQuiz();
   }
 
   function checkAnswer() {
@@ -566,7 +559,7 @@ let natureWords = [
 
     quizTotal++;
     numberOfQuizEl.textContent = `進度: ${quizTotal} / ${quizLimit}`;
-    scoreEl.textContent = `分數: ${quizCorrect}/${quizLimit}`;
+    scoreEl.textContent = `分數: ${quizCorrect}`;
     answerInput.disabled = true;
     submitBtn.classList.add('hidden');
     nextQuestionBtn.classList.remove('hidden');
@@ -574,16 +567,18 @@ let natureWords = [
 
 
   // --- 事件監聽器 ---
+  
+  // 上/下一字
   document.getElementById("next-btn").addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % words.length;
     updateWord();
   });
-
   document.getElementById("prev-btn").addEventListener("click", () => {
     currentIndex = (currentIndex - 1 + words.length) % words.length;
     updateWord();
   });
 
+  // 發音
   speakBtn.addEventListener("click", () => {
     const word = words[currentIndex].word;
     const utter = new SpeechSynthesisUtterance(word);
@@ -595,6 +590,7 @@ let natureWords = [
     synth.speak(utter);
   });
 
+  // 分類切換
   categorySelect.addEventListener("change", (e) => {
     const category = e.target.value;
     words = wordDatabase[category];
@@ -602,18 +598,19 @@ let natureWords = [
     updateWord();
 
     if (!quizView.classList.contains("hidden")) {
-      quizCorrect = 0;
-      quizTotal = 0;
-      setupQuiz();
+      resetQuiz();
     }
   });
 
+  // 模式切換
   learnModeBtn.addEventListener("click", () => {
     quizView.classList.add("hidden");
     cardView.classList.remove("hidden");
     navButtons.classList.remove("hidden");
-    hangulBtn.classList.remove("hidden");
-    wordlistBtn.classList.remove("hidden");
+    
+    // 控制區的顯示/隱藏
+    learnModeControls.classList.remove("hidden");
+    quizModeDescription.classList.add("hidden");
 
     learnModeBtn.classList.add("bg-indigo-500", "text-white");
     learnModeBtn.classList.remove("text-gray-700");
@@ -624,13 +621,12 @@ let natureWords = [
   quizModeBtn.addEventListener("click", () => {
     cardView.classList.add("hidden");
     navButtons.classList.add("hidden");
-    hangulBtn.classList.add("hidden");
-    wordlistBtn.classList.add("hidden");
     quizView.classList.remove("hidden");
-    quizCorrect = 0;
-    quizTotal = 0;
-    quizLimit = 10;
-    setupQuiz();
+    resetQuiz();
+    
+    // 控制區的顯示/隱藏
+    learnModeControls.classList.add("hidden");
+    quizModeDescription.classList.remove("hidden");
 
     quizModeBtn.classList.add("bg-indigo-500", "text-white");
     quizModeBtn.classList.remove("text-gray-700");
@@ -638,6 +634,7 @@ let natureWords = [
     learnModeBtn.classList.remove("bg-indigo-500", "text-white");
   });
 
+  // 單字總覽
   wordlistBtn.addEventListener("click", () => {
     const selectedCategory = categorySelect.value;
     const wordsToShow = wordDatabase[selectedCategory] || [];
@@ -653,7 +650,11 @@ let natureWords = [
             updateWord();
         }
         wordlistModal.classList.add("hidden");
-        koreanWordEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        // 如果在測驗模式，切換回學習模式
+        if(!quizView.classList.contains("hidden")) {
+            learnModeBtn.click();
+        }
+        cardView.scrollIntoView({ behavior: "smooth", block: "center" });
       };
       row.innerHTML = `
         <td class="px-4 py-2 border-b">${word.word}</td>
@@ -662,21 +663,35 @@ let natureWords = [
       `;
       wordlistBody.appendChild(row);
     });
-
     wordlistModal.classList.remove("hidden");
   });
-
   closeWordlist.addEventListener("click", () => {
     wordlistModal.classList.add("hidden");
   });
+  
+  // 40音表
+  hangulBtn.addEventListener("click", () => {
+    hangulModal.classList.remove("hidden");
+  });
+  closeHangul.addEventListener("click", () => {
+    hangulModal.classList.add("hidden");
+  });
 
+
+  // 測驗按鈕
   submitBtn.addEventListener('click', checkAnswer);
   answerInput.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !submitBtn.classList.contains('hidden')) {
       checkAnswer();
     }
   });
-  nextQuestionBtn.addEventListener('click', setupQuiz);
+  nextQuestionBtn.addEventListener('click', () => {
+      if(nextQuestionBtn.textContent === "重新測驗") {
+          resetQuiz();
+      } else {
+          setupQuiz();
+      }
+  });
 
   // --- 初始化 ---
   populateVoiceList();
@@ -684,11 +699,6 @@ let natureWords = [
     speechSynthesis.onvoiceschanged = populateVoiceList;
   }
 
-  // 預設進入學習模式
-  quizView.classList.add("hidden");
-  cardView.classList.remove("hidden");
-  navButtons.classList.remove("hidden");
-
-  // ✅ **問題修復處：** 載入頁面後，立刻更新一次單字卡內容
   updateWord();
 });
+
