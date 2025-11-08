@@ -7,28 +7,22 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
-</head>
+  <link rel="stylesheet" href="styles.css" /> </head>
 
 <body class="bg-gray-100">
 
-  <!-- 1. 固定的頂部欄 -->
   <header class="fixed top-[10px] left-0 w-full bg-gray-100/80 backdrop-blur-sm z-40 pt-4 px-4 text-center">
     <h1 class="text-4xl font-extrabold text-indigo-700">韓文單字學習器</h1>
     <p class="text-sm text-gray-600 mb-3">TOPIK I 基礎1000單字</p>
     
-    <!-- 模式切換按鈕 -->
     <div class="flex justify-center bg-gray-200 rounded-full p-1 max-w-xs mx-auto">
       <button id="learn-mode-btn" class="w-1/2 py-2 px-4 rounded-full bg-indigo-500 text-white transition-colors duration-300">學習模式</button>
       <button id="quiz-mode-btn" class="w-1/2 py-2 px-4 rounded-full text-gray-700 transition-colors duration-300">測驗模式</button>
     </div>
   </header>
 
-  <!-- 2. 固定的控制區 -->
   <div id="controls" class="fixed top-[140px] left-0 w-full bg-gray-100 z-30 py-4 px-4 text-center">
-    <!-- 這是一個容器，用來切換學習/測驗模式下的不同元件 -->
     <div class="h-10 flex items-center justify-center mb-4">
-      <!-- 學習模式下的功能按鈕 -->
       <div id="learn-mode-controls" class="flex justify-center gap-4">
        
         <button id="toggle-hangul" class="px-6 py-2 bg-white text-indigo-600 font-semibold rounded-full shadow transition duration-200 hover:bg-indigo-500 hover:text-white">
@@ -38,11 +32,9 @@
           單字總覽
         </button>
       </div>
-      <!-- 測驗模式下的提示文字 -->
       <p id="quiz-mode-description" class="text-gray-600 hidden">由選取的分類中隨機抽取中韓題目</p>
     </div>
 
-    <!-- 分類選單 -->
     <div>
       <select id="category-select" class="py-2 px-4 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         <option value="people">人物類</option>
@@ -54,21 +46,29 @@
         <option value="direction">方位類</option>
         <option value="transport">交通工具類</option>
         <option value="life">生活名詞類</option>
+        <option value="grammar">文法類</option>
         <option value="emotion">情緒類</option>
         <option value="color">色彩類</option>
+        <option value="number">數字類</option>
         <option value="body">人體類</option>
+        <option value="weather">氣候類</option>
         <option value="school">校園類</option>
         <option value="shopping">購物類</option>
-        <option value="adverb">副詞類</option>
-        <option value="question">問句類</option>
-        <option value="nature">大自然類</option>
+        <option value="nature">自然類</option>
+        <option value="work">工作類</option>
+        <option value="health">健康類</option>
+        <option value="culture">文化類</option>
+        <option value="emotionVerb">情緒副詞類</option>
+        <option value="object">物品類</option>
+        <option value="extraCommon">時間頻率副詞類</option>
+
+        
+        
       </select>
     </div>
   </div>
   
-  <!-- 3. 主內容區 (會變動的部分) -->
   <main class="pt-[270px] pb-10 px-4 w-full flex flex-col items-center">
-    <!-- 單字卡片 -->
     <div id="card-view" class="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md text-center mb-6">
       <div id="korean-word" class="text-5xl md:text-6xl font-bold mb-2"></div>
       <div id="romanization" class="hidden" class="text-xl text-gray-500 mb-5"></div>
@@ -78,7 +78,6 @@
       </button>
     </div>
     
-    <!-- 單字測驗區塊 -->
     <div id="quiz-view" class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center hidden">
       <div id="number-of-quiz" class="mb-2 text-md text-gray-600">進度: 0 / 10</div>
       <div id="question" class="text-2xl font-bold text-indigo-700 mb-4">題目</div>
@@ -92,7 +91,6 @@
       </div>
     </div>
     
-    <!-- 按鈕區 -->
     <div id="nav-buttons" class="w-full max-w-md flex gap-4">
       <button id="prev-btn" class="flex-1 py-4 bg-gray-300 text-gray-800 rounded-full hover:bg-gray-400 transition">
         上一字
@@ -103,20 +101,17 @@
     </div>
   </main>
   
-  <!-- 以下是彈出視窗和 footer，維持不變 -->
-  <!-- 40音表彈窗 -->
   <div id="hangul-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh] relative">
       <button id="close-hangul" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold">✕</button>
       <h2 class="text-xl font-bold text-indigo-700 text-center mb-4">韓文40音表</h2>
       <div class="overflow-y-auto max-h-[70vh] border rounded">
         
-        <h3 class="text-md font-semibold mb-2 text-gray-700">子音（基本 + 雙子音）</h3><div class="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-6"><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄱ</div><div class="text-sm text-gray-600">g/k</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄴ</div><div class="text-sm text-gray-600">n</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄷ</div><div class="text-sm text-gray-600">d/t</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄹ</div><div class="text-sm text-gray-600">r/l</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅁ</div><div class="text-sm text-gray-600">m</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅂ</div><div class="text-sm text-gray-600">b/p</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅅ</div><div class="text-sm text-gray-600">s</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅇ</div><div class="text-sm text-gray-600">ng/-</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅈ</div><div class="text-sm text-gray-600">j</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅊ</div><div class="text-sm text-gray-600">ch</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅋ</div><div class="text-sm text-gray-600">k</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅌ</div><div class="text-sm text-gray-600">t</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅍ</div><div class="text-sm text-gray-600">p</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅎ</div><div class="text-sm text-gray-600">h</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㄲ</div><div class="text-sm text-gray-600">kk</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㄸ</div><div class="text-sm text-gray-600">tt</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅃ</div><div class="text-sm text-gray-600">pp</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅆ</div><div class="text-sm text-gray-600">ss</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅉ</div><div class="text-sm text-gray-600">jj</div></div></div><h3 class="text-md font-semibold mb-2 text-gray-700">母音（基本 + 雙母音）</h3><div class="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-2"><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅏ</div><div class="text-sm text-gray-600">a</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅑ</div><div class="text-sm text-gray-600">ya</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅓ</div><div class="text-sm text-gray-600">eo</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅕ</div><div class="text-sm text-gray-600">yeo</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅗ</div><div class="text-sm text-gray-600">o</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅛ</div><div class="text-sm text-gray-600">yo</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅜ</div><div class="text-sm text-gray-600">u</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅠ</div><div class="text-sm text-gray-600">yu</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅡ</div><div class="text-sm text-gray-600">eu</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅣ</div><div class="text-sm text-gray-600">i</div></div></div><div class="grid grid-cols-4 sm:grid-cols-6 gap-3"><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅐ</div><div class="text-sm text-gray-600">ae</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅔ</div><div class="text-sm text-gray-600">e</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅒ</div><div class="text-sm text-gray-600">yae</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅖ</div><div class="text-sm text-gray-600">ye</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅘ</div><div class="text-sm text-gray-600">wa</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅙ</div><div class="text-sm text-gray-600">wae</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅝ</div><div class="text-sm text-gray-600">wo</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅞ</div><div class="text-sm text-gray-600">we</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅟ</div><div class="text-sm text-gray-600">wi</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅢ</div><div class="text-sm text-gray-600">ui</div></div></div>
+        <h3 class="text-md font-semibold mb-2 text-gray-700">子音（基本 + 雙子音）</h3><div class="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-6"><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄱ</div><div class="text-sm text-gray-600">g/k</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄴ</div><div class="text-sm text-gray-600">n</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄷ</div><div class="text-sm text-gray-600">d/t</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㄹ</div><div class="text-sm text-gray-600">r/l</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅁ</div><div class="text-sm text-gray-600">m</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅂ</div><div class="text-sm text-gray-600">b/p</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅅ</div><div class="text-sm text-gray-600">s</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅇ</div><div class="text-sm text-gray-600">ng/-</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅈ</div><div class="text-sm text-gray-600">j</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅊ</div><div class="text-sm text-gray-600">ch</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅋ</div><div class="text-sm text-gray-600">k</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅌ</div><div class="text-sm text-gray-600">t</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅍ</div><div class="text-sm text-gray-600">p</div></div><div class="p-2 bg-gray-100 rounded text-center"><div class="text-xl font-bold">ㅎ</div><div class="text-sm text-gray-600">h</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㄲ</div><div class="text-sm text-gray-600">kk</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㄸ</div><div class="text-sm text-gray-600">tt</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅃ</div><div class="text-sm text-gray-600">pp</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅆ</div><div class="text-sm text-gray-600">ss</div></div><div class="p-2 bg-gray-200 rounded text-center"><div class="text-xl font-bold">ㅉ</div><div class="text-sm text-gray-600">jj</div></div></div><h3 class="text-md font-semibold mb-2 text-gray-700">母音（基本 + 雙母音）</h3><div class="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-2"><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅏ</div><div class="text-sm text-gray-600">a</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅑ</div><div class="text-sm text-gray-600">ya</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅓ</div><div class="text-sm text-gray-600">eo</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅕ</div><div class="text-sm text-gray-600">yeo</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅗ</div><div class="text-sm text-gray-600">o</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅛ</div><div class="text-sm text-gray-600">yo</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅜ</div><div class="text-sm text-gray-600">u</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅠ</div><div class="text-sm text-gray-600">yu</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅡ</div><div class="text-sm text-gray-600">eu</div></div><div class="p-2 bg-blue-100 rounded text-center"><div class="text-xl font-bold">ㅣ</div><div class="text-sm text-gray-600">i</div></div></div><div class="grid grid-cols-4 sm:grid-cols-6 gap-3"><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅐ</div><div class="text-sm text-gray-600">ae</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅔ</div><div class="text-sm text-gray-600">e</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅒ</div><div class="text-sm text-gray-600">yae</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅖ</div><div class="text-sm text-gray-600">ye</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">t</div><div class="text-sm text-gray-600">wa</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅙ</div><div class="text-sm text-gray-600">wae</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅝ</div><div class="text-sm text-gray-600">wo</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">s</div><div class="text-sm text-gray-600">we</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅟ</div><div class="text-sm text-gray-600">wi</div></div><div class="p-2 bg-blue-200 rounded text-center"><div class="text-xl font-bold">ㅢ</div><div class="text-sm text-gray-600">ui</div></div></div>
       </div>
     </div>
   </div>
 
-  <!-- 單字總覽彈窗 -->
   <div id="wordlist-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh] relative">
       <button id="close-wordlist" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-30">✕</button>
@@ -131,8 +126,7 @@
             </tr>
           </thead>
           <tbody id="wordlist-body">
-            <!-- JS 會插入資料 -->
-          </tbody>
+            </tbody>
         </table>
       </div>
     </div>
@@ -146,4 +140,3 @@
   
 </body>
 </html>
-
